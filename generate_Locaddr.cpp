@@ -22,7 +22,7 @@ int main()
     output.open("Loc_addr.txt",ios::out);
     if(!input)
     {
-        cout<<"format判斷檔案無法開啟"<<endl;
+        cout<<"format not found"<<endl;
     }
     else
     {
@@ -106,10 +106,10 @@ int main()
                     addr+=format;
                     break;
             }
-            output<<hex<<addr<<endl;
+            output<<addr<<endl;
         }
         input.close();
         output.close();
-        cout<<"Loc_addr建立完成!"<<endl;
+        cout<<"Loc_addr finish"<<endl;
     }
 }
