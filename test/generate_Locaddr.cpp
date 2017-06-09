@@ -33,6 +33,7 @@ int main()
             {
                 break;
             }
+	    output<<hex<<addr<<endl;
             if(buffer[buffer.length()-2]=='5')
             {
                 stream<<buffer[buffer.length()-1];
@@ -106,7 +107,6 @@ int main()
                     addr+=format;
                     break;
             }
-            output<<addr<<endl;
         }
         input.close();
         output.close();
