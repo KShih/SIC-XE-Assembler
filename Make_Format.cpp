@@ -80,7 +80,7 @@ int getformat(char* c)
         if (step==2&&c[i]=='R'&&c[i+1]=='E'&&c[i+2]=='S'&&c[i+3]=='B'){return 53;}
         if (step==2&&c[i]=='R'&&c[i+1]=='E'&&c[i+2]=='S'&&c[i+3]=='W'){return 54;}
         if (step==2&&c[i]=='L'&&c[i+1]=='T'&&c[i+2]=='O'&&c[i+3]=='R'&&c[i+4]=='G'){return 60;}
-        if (c[i]=='U'&&c[i+1]=='S'&&c[i+2]=='E'&&c[i+3]!=' '){return 40;}
+        if (c[i]=='U'&&c[i+1]=='S'&&c[i+2]=='E'&&c[i+3]!=' '){return 0;}
         else if (c[i]=='U'&&c[i+1]=='S'&&c[i+2]=='E')
         {
             bool exist = false;
