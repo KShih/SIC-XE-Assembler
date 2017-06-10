@@ -24,7 +24,7 @@ MAXLEN     EQU      BUFEND-BUFFER 3
 . 0
 .   SUBROUTINE RDREC 0
 . 0
-           USE 0
+           USE 40
 RDREC      CLEAR    A 3
            CLEAR    S 3
            CLEAR    X 3
@@ -44,7 +44,7 @@ INPUT      BYTE     X'F2' 51
 . 0
 .   SUBROUTINE WRREC 0
 . 0
-           USE 0
+           USE 40
 WRREC      CLEAR    X 3
            LDT      LENGTH 3
 WLOOP      TD       =X'03' 3
