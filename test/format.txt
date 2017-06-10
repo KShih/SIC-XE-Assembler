@@ -19,15 +19,15 @@ RETADR     RESW     1 54
 LENGTH     RESW     1 54
            USE      Cbks 42
 BUFFER     RESB     4098 53
-BUFEND     EQU      * 3
-MAXLEN     EQU      BUFEND-BUFFER 3
+BUFEND     EQU      * 0
+MAXLEN     EQU      BUFEND-BUFFER 0
 . 0
 .   SUBROUTINE RDREC 0
 . 0
            USE 40
-RDREC      CLEAR    A 3
-           CLEAR    S 3
-           CLEAR    X 3
+RDREC      CLEAR    A 2
+           CLEAR    S 2
+           CLEAR    X 2
            +LDT     #MAXLEN 4
 RLOOP      TD       INPUT 3
            JEQ      RLOOP 3
@@ -45,7 +45,7 @@ INPUT      BYTE     X'F2' 51
 .   SUBROUTINE WRREC 0
 . 0
            USE 40
-WRREC      CLEAR    X 3
+WRREC      CLEAR    X 2
            LDT      LENGTH 3
 WLOOP      TD       =X'03' 3
            JEQ      WLOOP 3
