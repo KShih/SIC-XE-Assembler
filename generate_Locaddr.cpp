@@ -1,14 +1,18 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-#include <sstream>
+#include<sstream>
+#include<iomanip>
+#include<ctype.h>
 
 using namespace std;
 
 int main()
 {
     fstream input;
-    fstream output;
+    fstream addr_output;
+    fstream SYMTAB;
+    fstream PRGRAM_BLOCKS;
     string buffer;
     string numstr;
     stringstream stream;
@@ -17,9 +21,23 @@ int main()
     int addr=0;
     int Fpoint,Bpoint;
     int i,num;
+    int block=0;
+    int block_addr[10]={0};
+    int sum_addr=0;
+    //string block_name[10]={"\0","\0","\0","\0","\0","\0","\0","\0","\0","\0"};
+    string block_name[10];
+    string blockstr;
+    //string LTORG_name[10]={"\0","\0","\0","\0","\0","\0","\0","\0","\0","\0"};
+    string LTORG_name[10];
+    string LTORGstr;
+    bool LTORG_flag=true;
+    bool USE_flag=false;
+    bool LTORG_outputflag=false;
 
     input.open("format.txt",ios::in);
-    output.open("Loc_addr.txt",ios::out);
+    addr_output.open("Loc_addr.txt",ios::out);
+    SYMTAB.open("SYMTAB.txt",ios::out);
+    PRGRAM_BLOCKS.open("PRGRAM_BLOCKS.txt",ios::out);
     if(!input)
     {
         cout<<"format not found"<<endl;
@@ -33,7 +51,46 @@ int main()
             {
                 break;
             }
-	    output<<hex<<addr<<endl;
+            else if(buffer[0]=='.')
+            {
+                continue;
+            }
+            if(buffer[20]=='=')
+            {
+                for(i=20;i<buffer.length()-2;i++)
+                {
+                    LTORGstr=LTORGstr+buffer[i];
+                }
+                for(i=0;i<=9;i++)
+                {
+                    if(LTORG_name[i]==LTORGstr)
+                    {
+                        LTORG_flag=false;
+                        break;
+                    }
+                }
+                if(LTORG_flag==true)
+                {
+                    for(i=0;i<=9;i++)
+                    {
+                        if(LTORG_name[i]=="\0")
+                        {
+                            LTORG_name[i]=LTORGstr;
+                            break;
+                        }
+                    }
+                }
+                LTORG_flag=true;
+                LTORGstr="\0";
+            }
+            if(buffer[0]!=' ')
+            {
+                for(i=0;i<=10;i++)
+                {
+                    SYMTAB<<buffer[i];
+                }
+                SYMTAB<<block<<"  "<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<endl;
+            }
             if(buffer[buffer.length()-2]=='5')
             {
                 stream<<buffer[buffer.length()-1];
@@ -41,19 +98,75 @@ int main()
                 stream.clear();
                 format+=50;
             }
+            else if(buffer[buffer.length()-2]=='4')
+            {
+                stream<<buffer[buffer.length()-1];
+                stream>>block;
+                stream.clear();
+                format=40;
+                USE_flag=true;
+            }
+            else if(buffer[buffer.length()-2]=='6')
+            {
+                format=60;
+            }
             else
             {
                 stream<<buffer[buffer.length()-1];
                 stream>>format;
                 stream.clear();
             }
+            if(USE_flag!=true && LTORG_outputflag!=true)
+            {
+                addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/"<<block<<endl;
+            }
+            USE_flag=false;
+            LTORG_outputflag=false;
             switch(format)
             {
+                case 40:
+                    if(block==0)
+                    {
+                        block_name[block]="DEFAULT";
+                    }
+                    else
+                    {
+                        for(i=20;i<buffer.length()-3;i++)
+                        {
+                            blockstr=blockstr+buffer[i];
+                        }
+                        block_name[block]=blockstr;
+                        blockstr="\0";
+                    }
+                    break;
+                case 60:
+                    for(i=0;i<=9;i++)
+                    {
+                        if(LTORG_name[i]!="\0")
+                        {
+                            SYMTAB<<left<<setw(11)<<setfill(' ')<<LTORG_name[i]<<block<<"  "<<right<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<endl;
+                            if(LTORG_name[i][1]=='C')
+                            {
+                                block_addr[block]+=3;
+                            }
+                            else if(LTORG_name[i][1]=='X')
+                            {
+                                block_addr[block]+=1;
+                            }
+                            addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/"<<block<<endl;
+                            LTORG_outputflag=true;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    break;
                 case 51:
-                    addr+=1;
+                    block_addr[block]+=1;
                     break;
                 case 52:
-                    addr+=3;
+                    block_addr[block]+=3;
                     break;
                 case 53:
                     for(i=buffer.length()-3;i>=0;i--)
@@ -77,7 +190,7 @@ int main()
                     stream<<numstr;
                     stream>>num;
                     stream.clear();
-                    addr+=num;
+                    block_addr[block]+=num;
                     break;
                 case 54:
                     for(i=buffer.length()-3;i>=0;i--)
@@ -101,15 +214,29 @@ int main()
                     stream<<numstr;
                     stream>>num;
                     stream.clear();
-                    addr+=num*3;
+                    block_addr[block]+=num*3;
                     break;
                 default:
-                    addr+=format;
+                    block_addr[block]+=format;
                     break;
             }
         }
+        for(i=0;i<=9;i++)
+        {
+            if(block_name[i]!="\0")
+            {
+                PRGRAM_BLOCKS<<left<<setw(9)<<setfill(' ')<<block_name[i]<<"  "<<i<<"  "<<right<<setw(4)<<setfill('0')<<hex<<sum_addr<<"  "<<setw(4)<<setfill('0')<<hex<<block_addr[i]<<endl;
+                sum_addr+=block_addr[i];
+            }
+            else
+            {
+                break;
+            }
+        }
         input.close();
-        output.close();
-        cout<<"Loc_addr finish"<<endl;
+        addr_output.close();
+        SYMTAB.close();
+        PRGRAM_BLOCKS.close();
+        cout<<"finish!"<<endl;
     }
 }

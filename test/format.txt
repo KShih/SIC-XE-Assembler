@@ -1,14 +1,60 @@
-0 START LOVE 10000 0
-5 RDREC CLEAR X 3
-10 CLEAR A 3
-15 CLEAR S 3
-20 +LDT #4096 4
-25 RLOOP TD INPUT 3
-30 JEQ RLOOP 3
-35 +RD INPUT 4
-40 COMPR A,S 2
-45 BYTE Q 100 51
-50 WORD Q 100 52
-55 RESW Q 100 54
-60 RESB Q 100 53
-65 END LOVE 0
+COPY       START    0 0
+FIRST      STL      RETADR 3
+           LDB      #LENGTH 3
+           BASE     LENGTH 0
+CLOOP      JSUB     RDREC 3
+           LDA      LENGTH 3
+           COMP     #0 3
+           JEQ      ENDFIL 3
+           JSUB     WRREC 3
+           J        CLOOP 3
+ENDFIL     LDA      =C'End' 3
+           STA      BUFFER 3
+           LDS      #3 3
+           STS      LENGTH 3
+           JSUB     WRREC 3
+           J        @RETADR 3
+           USE      CDATA 41
+RETADR     RESW     1 54
+LENGTH     RESW     1 54
+           USE      Cbks 42
+BUFFER     RESB     4098 53
+BUFEND     EQU      * 3
+MAXLEN     EQU      BUFEND-BUFFER 3
+. 0
+.   SUBROUTINE RDREC 0
+. 0
+           USE 40
+RDREC      CLEAR    A 3
+           CLEAR    S 3
+           CLEAR    X 3
+           +LDT     #MAXLEN 4
+RLOOP      TD       INPUT 3
+           JEQ      RLOOP 3
+           RD       INPUT 3
+           COMPR    A,S 2
+           JEQ      EXIT 3
+           STCH     BUFFER,X 2
+           TIXR     T 3
+           JLT      rloop 3
+exit       STX      LENGTH 3
+           RSUB 3
+           USE      CDATA 41
+INPUT      BYTE     X'F2' 51
+. 0
+.   SUBROUTINE WRREC 0
+. 0
+           USE 40
+WRREC      CLEAR    X 3
+           LDT      LENGTH 3
+WLOOP      TD       =X'03' 3
+           JEQ      WLOOP 3
+           LDCH     BUFFER,X 2
+           WD       =X'03' 3
+           TIXR     T 3
+           JLT      WLOOP 3
+XTR        LDT      WLOOP+21 3
+           RSUB 3
+           USE      CDATA 41
+           LTORG 60
+           END      FIRST 0
