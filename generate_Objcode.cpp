@@ -78,7 +78,6 @@ optable OPTAB[32]={
     block_address -> PRGRAM_BLOCKS's address
     symtab_name / symtab_block / symtab_address -> SYMTAB's data
     LTORG -> Record LTORG
-
 */
 
 
@@ -491,7 +490,7 @@ void writeobj()
 
         if(check==0)
         {
-            objcode[i] == " ";
+            objcode[i] = "";
            //cout<<"1"<<endl;
             continue;
         }
@@ -508,6 +507,12 @@ void writeobj()
                 ni=2;
                 flag_n[i] = "1";
                 flag_i[i] = "0";
+                string im_temp="";
+                for(int k=1;k<label[i].size();k++)
+                {
+                    im_temp+=label[i][k];
+                }
+                label[i]=im_temp;
             }
             obj=obj+ni;
         }
@@ -589,8 +594,22 @@ void cal_immediate(){
                         ss << hex << xbpe;
                         ss >> tempStr;
                         temp = tempStr + temp;
-                        objcode[i]+=temp;
-                        OBJCODE_FINISH[i] = true;
+                        if(checkplus[i] == "1")
+                        {
+                            objcode[i]+=temp;
+                            OBJCODE_FINISH[i] = true;
+                        }
+                        else
+                        {
+                            string im_temp="";
+                            for(int k=1;k<label[i].size();k++)
+                            {
+                                im_temp+=label[i][k];
+                            }
+                            label[i]=im_temp;
+                        }
+
+
                         break;
                     }
                     /*
@@ -599,7 +618,6 @@ void cal_immediate(){
                         for(int j=1;j<counter;j++) {
                             //cout << opcode[j] << " " << label[j] << endl;
                             if(opcode[j] == "BASE" && label[j] == temp) {
-
                                 break;
                             }
                         }
@@ -661,6 +679,12 @@ void cal_xbpe() {
         for(int j=0;j<label[i].size();j++) {
             if(label[i][j] == ',' && label[i][j+1] == 'X') {
                 xbpe += x;
+                string temp="";
+                for(int k=0;k<label[i].size()-2;k++)
+                {
+                    temp+=label[i][k];
+                }
+                label[i]=temp;
                 break;
             }
         }
@@ -693,7 +717,7 @@ void cal_address() {
             address += 21;
             label[i] = temp;
         }
-            if( label[i][0]=='=' || label[i][0]=='@' || label[i][label[i].size()-1]=='X') {
+            if( label[i][0]=='=' || label[i][0]=='@'|| label[i][label[i].size()-1]=='X') {
         }else {
             checkWrong = true;
             for(int j=0;j<SYMTAB_SIZE;j++) {
@@ -705,7 +729,7 @@ void cal_address() {
                 }
             }
             if(checkWrong) {
-                cout << "can not find Label¡G" << label[i] << endl;
+                cout << "can not find Label:" << label[i] << endl;
                 Stop = true;
             }
         }
@@ -759,6 +783,7 @@ void cal_address() {
             temp = ttemp;
         }
         objcode[i] += temp;
+        //cout<<objcode[i]<<endl;
         OBJCODE_FINISH[i] = true;
     }
 }
@@ -781,7 +806,6 @@ void showobjcode()
     fout.open("OBJECT_CODE.txt",ios::out);
     for(int i=1;i<=counter;i++)
     {
-
         //cout << symtable[i] << " " << opcode[i] << " " << label[i] << endl;
         //cout << line[i] << " " << block[i] << endl;
         //cout << OBJCODE_FINISH[i] << " ";
