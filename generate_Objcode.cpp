@@ -491,7 +491,7 @@ void writeobj()
 
         if(check==0)
         {
-            objcode[i]==" ";
+            objcode[i] == " ";
            //cout<<"1"<<endl;
             continue;
         }
@@ -705,7 +705,7 @@ void cal_address() {
                 }
             }
             if(checkWrong) {
-                cout << "can not find Label：" << label[i] << endl;
+                cout << "can not find Label¡G" << label[i] << endl;
                 Stop = true;
             }
         }
@@ -788,6 +788,11 @@ void showobjcode()
         if( line[i] == "Comment") {
             cout << line[i] << endl;
             fout << line[i] << endl;
+            continue;
+        }
+        if( opcode[i] == "END"){
+            cout<< opcode[i] << endl;
+            fout<< opcode[i] << endl;
             continue;
         }
             if(objcode[i] != "") {
