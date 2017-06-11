@@ -75,12 +75,14 @@ int getformat(char* c)
         if (step==2&&c[i]=='E'&&c[i+1]=='N'&&c[i+2]=='D'){return 0;}
         if (step==1&&c[i]=='.'){return 0;}
         if (step==2&&c[i]=='B'&&c[i+1]=='A'&&c[i+2]=='S'&&c[i+3]=='E'){return 0;}
+        if (step==2&&c[i]=='E'&&c[i+1]=='Q'&&c[i+2]=='U'){return 0;}
         if (step==2&&c[i]=='B'&&c[i+1]=='Y'&&c[i+2]=='T'&&c[i+3]=='E'){return 51;}
         if (step==2&&c[i]=='W'&&c[i+1]=='O'&&c[i+2]=='R'&&c[i+3]=='D'){return 52;}
         if (step==2&&c[i]=='R'&&c[i+1]=='E'&&c[i+2]=='S'&&c[i+3]=='B'){return 53;}
         if (step==2&&c[i]=='R'&&c[i+1]=='E'&&c[i+2]=='S'&&c[i+3]=='W'){return 54;}
         if (step==2&&c[i]=='L'&&c[i+1]=='T'&&c[i+2]=='O'&&c[i+3]=='R'&&c[i+4]=='G'){return 60;}
-        if (c[i]=='U'&&c[i+1]=='S'&&c[i+2]=='E'&&c[i+3]!=' '){return 0;}
+        if (c[i]=='U'&&c[i+1]=='S'&&c[i+2]=='E'&&c[i+3]!=' '){return 40;}
+        if (c[i]=='C'&&c[i+1]=='L'&&c[i+2]=='E'&&c[i+3]=='A'&&c[i+4]=='R'){return 2;}
         else if (c[i]=='U'&&c[i+1]=='S'&&c[i+2]=='E')
         {
             bool exist = false;
@@ -104,7 +106,7 @@ int getformat(char* c)
 
             for(k=41;k<100;k++)
             {
-                if(!strncmp(blocktable[k],temp,strlen(blocktable[k])))  /*if this blockname is exit,return it's block num*/
+                if(!strncmp(blocktable[k],temp,strlen(blocktable[k])))  /*if this blockname is exist,return it's block num*/
                 {
                     return k;
                 }

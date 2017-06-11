@@ -24,14 +24,12 @@ int main()
     int block=0;
     int block_addr[10]={0};
     int sum_addr=0;
-    //string block_name[10]={"\0","\0","\0","\0","\0","\0","\0","\0","\0","\0"};
-    string block_name[10];
+    string block_name[10]={"\0"};
     string blockstr;
-    //string LTORG_name[10]={"\0","\0","\0","\0","\0","\0","\0","\0","\0","\0"};
-    string LTORG_name[10];
+    string LTORG_name[10]={"\0"};
     string LTORGstr;
     bool LTORG_flag=true;
-    bool USE_flag=false;
+    bool absolute_flag=false;
     bool LTORG_outputflag=false;
 
     input.open("format.txt",ios::in);
@@ -53,6 +51,7 @@ int main()
             }
             else if(buffer[0]=='.')
             {
+                addr_output<<"Comment"<<endl;
                 continue;
             }
             if(buffer[20]=='=')
@@ -83,6 +82,16 @@ int main()
                 LTORG_flag=true;
                 LTORGstr="\0";
             }
+            if(buffer[11]=='E' && buffer[12]=='Q' && buffer[13]=='U')
+            {
+                for(i=20;i<buffer.length()-2;i++)
+                {
+                    if(buffer[i]=='-')
+                    {
+                        absolute_flag=true;
+                    }
+                }
+            }
             if(buffer[0]!=' ')
             {
                 for(i=0;i<=10;i++)
@@ -104,11 +113,11 @@ int main()
                 stream>>block;
                 stream.clear();
                 format=40;
-                USE_flag=true;
             }
             else if(buffer[buffer.length()-2]=='6')
             {
                 format=60;
+                addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/-"<<endl;
             }
             else
             {
@@ -116,11 +125,15 @@ int main()
                 stream>>format;
                 stream.clear();
             }
-            if(USE_flag!=true && LTORG_outputflag!=true)
+            if(absolute_flag==true)
+            {
+                addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/-"<<endl;
+            }
+            else if(LTORG_outputflag!=true)
             {
                 addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/"<<block<<endl;
             }
-            USE_flag=false;
+            absolute_flag=false;
             LTORG_outputflag=false;
             switch(format)
             {
