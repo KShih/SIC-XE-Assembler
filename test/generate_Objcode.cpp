@@ -705,7 +705,7 @@ void cal_address() {
                 }
             }
             if(checkWrong) {
-                cout << "can not find LabelÂ¡G" << label[i] << endl;
+                cout << "can not find Label¡G" << label[i] << endl;
                 Stop = true;
             }
         }
