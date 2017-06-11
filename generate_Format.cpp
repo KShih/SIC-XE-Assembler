@@ -118,7 +118,7 @@ int getformat(char* c)
             return 4;
         }
 
-        if(step==3&&c[i]==','&&c[i+1]!='x')
+        if(step==3&&c[i]==','&&c[i+1]!='X')
         {
             return 2;
         }
