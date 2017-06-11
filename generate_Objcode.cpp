@@ -88,7 +88,7 @@ string line[1000],code[1000],symtable[1000],opcode[1000],label[1000],objcode[100
         flag_b[1000],flag_p[1000],flag_e[1000],format[1000];
 bool OBJCODE_FINISH[1000] = {false}, checkWrong = true,Stop = false;
 int loc_count = 0;
-int time =0;
+int counter =0;
 int LTORG_SIZE = 0;
 int BLOCK_SIZE = 0;
 int SYMTAB_SIZE = 0;
@@ -178,7 +178,7 @@ void readfile()
         while(!fo.eof())
         {
             bool check_break =false;
-            time++;
+            counter++;
             getline(fo,code[++loc_count]);
             for(int i=0;i<code[loc_count].size()&&!check_break;i++)
             {
@@ -188,11 +188,11 @@ void readfile()
                 {
                     if(code[loc_count][i]==' ')
                     {
-                        symtable[time]=" ";
+                        symtable[counter]=" ";
                     }
                     else if(code[loc_count][i]=='.')
                     {
-                        symtable[time]=".";
+                        symtable[counter]=".";
                         check_break=true;
                     }
                     else
@@ -204,7 +204,7 @@ void readfile()
                             //cout<<code[loc_count][j];
                             j++;
                         }
-                        symtable[time]=temp;
+                        symtable[counter]=temp;
                         //cout<<temp<<endl;
                     }
                 }
@@ -231,15 +231,15 @@ void readfile()
                     }
                 }
                 if( temp == "LTORG") {
-                    opcode[time]=temp;
+                    opcode[counter]=temp;
                     for(int tt=0; tt<LTORG_SIZE; tt++) {
-                        ++time;
+                        ++counter;
                         ++loc_count;
-                        symtable[time] = '*';
-                        opcode[time] = LTORG[tt];
-                        label[time] = "";
+                        symtable[counter] = '*';
+                        opcode[counter] = LTORG[tt];
+                        label[counter] = "";
                     }
-                }else opcode[time]=temp;
+                }else opcode[counter]=temp;
                 if(check_break)
                 {
                     break;
@@ -269,7 +269,7 @@ void readfile()
                     }
                 }
 
-                label[time]=temp;
+                label[counter]=temp;
                 //cout<<temp<<endl;
                 break;
             }
@@ -397,7 +397,7 @@ void readfile()
 
 void writeobj()
 {
-    for(int i=1;i<=time;i++)
+    for(int i=1;i<=counter;i++)
     {
         int check=0;
         bool checkPlus=false;
@@ -533,7 +533,7 @@ void writeobj()
 };
 
 void cal_immediate(){
-    for(int i=1;i<time;i++) {
+    for(int i=1;i<counter;i++) {
         int xbpe = 2;
         if( label[i][0] == '#') {
             if(label[i][1] >= '0' && label[i][1] <= '9'){
@@ -557,7 +557,7 @@ void cal_immediate(){
                 }
                 bool check_base = false;
                 //cout << temp <<endl;
-                for(int j=1;j<time;j++) {
+                for(int j=1;j<counter;j++) {
                     int line_i, line_j;
                     stringstream ss;
                     ss << hex << line[i];
@@ -596,7 +596,7 @@ void cal_immediate(){
                     /*
                     if(abs(line_i-line_j)>=0x1000) {
                         check_base = true;
-                        for(int j=1;j<time;j++) {
+                        for(int j=1;j<counter;j++) {
                             //cout << opcode[j] << " " << label[j] << endl;
                             if(opcode[j] == "BASE" && label[j] == temp) {
 
@@ -625,7 +625,7 @@ void cal_immediate(){
 }
 
 void cal_register() {
-    for(int i=0;i<time;i++) {
+    for(int i=0;i<counter;i++) {
         if(opcode[i][opcode[i].size()-1] == 'R') {
             if(label[i].size()>1) {
                 for(int j=0;j<6;j++) {
@@ -654,7 +654,7 @@ void cal_register() {
 
 void cal_xbpe() {
     int x = 8, b = 4, p = 2, e = 1;
-    for(int i=1;i<=time;i++) {
+    for(int i=1;i<=counter;i++) {
         int xbpe = p;
         if(OBJCODE_FINISH[i])
             continue;
@@ -675,7 +675,7 @@ void cal_xbpe() {
 
 void cal_address() {
     int address = 0x0000, which_block = 0;
-    for(int i=1;i<=time;i++) {
+    for(int i=1;i<=counter;i++) {
         address = 0x0000;
         if(OBJCODE_FINISH[i])
             continue;
@@ -764,7 +764,7 @@ void cal_address() {
 }
 
 void cal_OBJCODE_FINSIH() {
-    for(int i=1;i<=time;i++)
+    for(int i=1;i<=counter;i++)
         if(objcode[i] == "")
             OBJCODE_FINISH[i] = true;
 }
@@ -779,18 +779,17 @@ void showobjcode()
 {
     fstream fout;
     fout.open("OBJECT_CODE.txt",ios::out);
-    for(int i=1;i<=time;i++)
+    for(int i=1;i<=counter;i++)
     {
+
         //cout << symtable[i] << " " << opcode[i] << " " << label[i] << endl;
         //cout << line[i] << " " << block[i] << endl;
         //cout << OBJCODE_FINISH[i] << " ";
         if( line[i] == "Comment") {
-            cout << i << "  " << line[i] << endl;
-            fout << i << "  " << line[i] << endl;
+            cout << line[i] << endl;
+            fout << line[i] << endl;
             continue;
         }
-        cout << i << "  " << "L/B=" << line[i] << "/" << block[i] << "  ";
-        fout << i << "  " << "L/B=" << line[i] << "/" << block[i] << "  ";
             if(objcode[i] != "") {
                 string temp = "";
                 switch (objcode[i][2]) {
@@ -818,20 +817,20 @@ void showobjcode()
                     fout << opcode[i] << "  ";
                 }else if(format[i] == "format4"){
                     cout << format[i] << " ";
-                    cout << "flags：" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
+                    cout << "flags:" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
                     fout << format[i] << " ";
-                    fout << "flags：" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
+                    fout << "flags:" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
                 }else if(format[i] == "format2") {
                     cout << format[i] << " ";
                     fout << format[i] << " ";
                 }else {
-                    cout << "flags：" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
-                    fout << "flags：" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
+                    cout << "flags:" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
+                    fout << "flags:" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
                 }
 
             }else{
-                cout << "xx" << " ";
-                fout << "xx" << " ";
+                cout << "XX" << " ";
+                fout << "XX" << " ";
             }
         cout<<objcode[i]<<endl;
         fout<<objcode[i]<<endl;
