@@ -4,36 +4,36 @@
 #include<cstdlib>
 #include <sstream>
 #include <iomanip>
-
+ 
 using namespace std;
 struct reg{
-
+ 
     char r;
     char reg_code;
-
+ 
 };
-
+ 
 reg REGTAB[6]={
-
+ 
     {'A','0'},
     {'X','1'},
     {'L','2'},
     {'B','3'},
     {'S','4'},
     {'T','5'},
-
+ 
 };
-
+ 
 struct optable{
-
+ 
     char op[8];
     unsigned int format;
     unsigned int opcode;
-
+ 
 };
-
+ 
 optable OPTAB[32]={
-
+ 
     {   "ADD",  3,  0x18},
     { "CLEAR",  2,  0xB4},
     {  "COMP",  3,  0x28},
@@ -66,7 +66,7 @@ optable OPTAB[32]={
     {   "TIX",  3,  0x2C},
     {  "TIXR",  2,  0xB8},
     {    "WD",  3,  0xDC},
-
+ 
 };
 /*
     line --> LOCCTR
@@ -78,10 +78,10 @@ optable OPTAB[32]={
     block_address -> PRGRAM_BLOCKS's address
     symtab_name / symtab_block / symtab_address -> SYMTAB's data
     LTORG -> Record LTORG
-
+ 
 */
-
-
+ 
+ 
 string line[1000],code[1000],symtable[1000],opcode[1000],label[1000],objcode[1000]
         ,checkplus[1000],block[1000],block_address[1000],symtab_name[1000],symtab_block[1000],
         symtab_address[1000],LTORG[10],block_name[1000],flag_n[1000],flag_i[1000],flag_x[1000],
@@ -93,23 +93,23 @@ int LTORG_SIZE = 0;
 int BLOCK_SIZE = 0;
 int SYMTAB_SIZE = 0;
 void readfile();
-
+ 
 void writeobj();
-
+ 
 void reset_code();
-
+ 
 void cal_immediate();
-
+ 
 void cal_register();
-
+ 
 void cal_xbpe();
-
+ 
 void cal_address();
-
+ 
 void cal_OBJCODE_FINSIH();
-
+ 
 void showobjcode();
-
+ 
 int main()
 {
     readfile();
@@ -119,20 +119,20 @@ int main()
     }else
         cout << "Label's name or opcode has error." << endl;
 }
-
+ 
 void readfile()
 {
-
+ 
     fstream fi;
     fstream fo ;
     fstream fsymtab;
     fstream fblock;
-
+ 
     fi.open("Loc_addr.txt",ios::in);
     fo.open("FIN-codetest-2017.txt",ios::in);
     fsymtab.open("SYMTAB.txt",ios::in);
     fblock.open("PRGRAM_BLOCKS.txt",ios::in);
-
+ 
     if(!fi)
     {
         cout<<"no file"<<endl;
@@ -166,9 +166,9 @@ void readfile()
             //cout<<line[loc_count]<<endl;
         }
     }
-
+ 
     loc_count=0;
-
+ 
     if(!fo)
     {
         cout<<"no file"<<endl;
@@ -212,7 +212,7 @@ void readfile()
                 {
                     break;
                 }
-
+ 
 //---------------------opcode-------------------------------
                 int k=j;
                 while(code[loc_count][k]==' ')
@@ -244,7 +244,7 @@ void readfile()
                 {
                     break;
                 }
-
+ 
 //-----------------------label---------------------------------
                 while(code[loc_count][k]==' ')
                 {
@@ -268,7 +268,7 @@ void readfile()
                         LTORG_SIZE++;
                     }
                 }
-
+ 
                 label[counter]=temp;
                 //cout<<temp<<endl;
                 break;
@@ -276,7 +276,7 @@ void readfile()
         }
     }
     //---------------------read SYMTAB ---------------------
-
+ 
     loc_count = 0;
     if(!fsymtab)
     {
@@ -302,7 +302,7 @@ void readfile()
                         temp+=code[loc_count][j];
                         //cout<<code[loc_count][j];
                         j++;
-
+ 
                     }
                     symtab_name[SYMTAB_SIZE]=temp;
                     //cout<<temp<<endl;
@@ -311,14 +311,14 @@ void readfile()
                 {
                     break;
                 }
-
+ 
 //---------------------symtab_block-------------------------------
                 int k=j;
                 while(code[loc_count][k]==' ')
                 {
                     k++;
                 }
-
+ 
                 string temp="";
                 while(code[loc_count][k]!=' ')
                 {
@@ -330,21 +330,21 @@ void readfile()
                         break;
                     }
                 }
-
+ 
                 symtab_block[SYMTAB_SIZE]=temp;
                 //cout<<temp<<","<<endl;
                 if(check_break)
                 {
                     break;
                 }
-
+ 
 //-----------------------symtab_address---------------------------------
-
+ 
                 while(code[loc_count][k]==' ')
                 {
                     k++;
                 }
-
+ 
                 temp="";
                 while(code[loc_count][k]!='\0')
                 {
@@ -357,11 +357,11 @@ void readfile()
             }
         }
     }
-
+ 
     //----------------------read BLOCKS ---------------------
-
+ 
     loc_count=0;
-
+ 
     if(!fblock)
     {
         cout<<"no file"<<endl;
@@ -377,7 +377,7 @@ void readfile()
                 temp += code[loc_count][i];
             }
             block_name[BLOCK_SIZE] = temp;
-
+ 
             temp = "";
             for(int i=14;i<18;i++)
             {
@@ -387,14 +387,14 @@ void readfile()
             BLOCK_SIZE++;
         }
     }
-
+ 
     fi.close();
     fo.close();
     fsymtab.close();
     fblock.close();
-
+ 
 };
-
+ 
 void writeobj()
 {
     for(int i=1;i<=counter;i++)
@@ -405,7 +405,7 @@ void writeobj()
         int ni =3;
         flag_n[i] = "1";
         flag_i[i] = "1";
-
+ 
         if( opcode[i][0] == '=') {
             string temp = "";
             for(int j=3;j<opcode[i].size()-1;j++) {
@@ -431,26 +431,26 @@ void writeobj()
             }
             continue;
         }
-
+ 
         if(opcode[i][0]=='+')
         {
             checkPlus=true;
             checkplus[i] = "1";
             format[i] = "format4";
-
+ 
             string temp="";
-
+ 
             for(int j=1;j<opcode[i].size();j++)
             {
                 temp+=opcode[i][j];
             }
                 opcode[i]=temp;
         }
-
+ 
         if(opcode[i]=="BYTE")
         {
             string temp="";
-
+ 
             if(label[i][0]=='X')
             {
                 for(int j=2;j<label[i].size()-1;j++)
@@ -462,7 +462,7 @@ void writeobj()
                 //cout<<temp<<endl;
             }
         }
-
+ 
         if(opcode[i]=="RSUB")
         {
                 objcode[i]="4F0000";
@@ -470,7 +470,7 @@ void writeobj()
                 continue;
                 //cout<<temp<<endl;
         }
-
+ 
        for(int k=0;k<32;k++)
         {
             if(opcode[i]==OPTAB[k].op)
@@ -488,10 +488,10 @@ void writeobj()
                 //cout<<obj<<endl;
             }
         }
-
+ 
         if(check==0)
         {
-            objcode[i]==" ";
+            objcode[i] == " ";
            //cout<<"1"<<endl;
             continue;
         }
@@ -514,7 +514,7 @@ void writeobj()
         stringstream ss;
         ss << hex << obj;
         ss >> objcode[i];
-
+ 
         if (objcode[i].size() == 1) {
             string temp = "0";
             temp += objcode[i];
@@ -529,9 +529,9 @@ void writeobj()
         cal_OBJCODE_FINSIH();
         cal_xbpe();
         cal_address();
-
+ 
 };
-
+ 
 void cal_immediate(){
     for(int i=1;i<counter;i++) {
         int xbpe = 2;
@@ -599,7 +599,7 @@ void cal_immediate(){
                         for(int j=1;j<counter;j++) {
                             //cout << opcode[j] << " " << label[j] << endl;
                             if(opcode[j] == "BASE" && label[j] == temp) {
-
+ 
                                 break;
                             }
                         }
@@ -623,7 +623,7 @@ void cal_immediate(){
         }
     }
 }
-
+ 
 void cal_register() {
     for(int i=0;i<counter;i++) {
         if(opcode[i][opcode[i].size()-1] == 'R') {
@@ -651,7 +651,7 @@ void cal_register() {
         }
     }
 }
-
+ 
 void cal_xbpe() {
     int x = 8, b = 4, p = 2, e = 1;
     for(int i=1;i<=counter;i++) {
@@ -671,8 +671,8 @@ void cal_xbpe() {
         objcode[i] += temp;
     }
 }
-
-
+ 
+ 
 void cal_address() {
     int address = 0x0000, which_block = 0;
     for(int i=1;i<=counter;i++) {
@@ -705,7 +705,7 @@ void cal_address() {
                 }
             }
             if(checkWrong) {
-                cout << "can not find Label：" << label[i] << endl;
+                cout << "can not find Label¡G" << label[i] << endl;
                 Stop = true;
             }
         }
@@ -762,32 +762,37 @@ void cal_address() {
         OBJCODE_FINISH[i] = true;
     }
 }
-
+ 
 void cal_OBJCODE_FINSIH() {
     for(int i=1;i<=counter;i++)
         if(objcode[i] == "")
             OBJCODE_FINISH[i] = true;
 }
-
+ 
 void reset_code() {
     string temp = "";
     for(int i=0;i<1000;i++)
         code[i] = temp;
 }
-
+ 
 void showobjcode()
 {
     fstream fout;
     fout.open("OBJECT_CODE.txt",ios::out);
     for(int i=1;i<=counter;i++)
     {
-
+ 
         //cout << symtable[i] << " " << opcode[i] << " " << label[i] << endl;
         //cout << line[i] << " " << block[i] << endl;
         //cout << OBJCODE_FINISH[i] << " ";
         if( line[i] == "Comment") {
             cout << line[i] << endl;
             fout << line[i] << endl;
+            continue;
+        }
+        if( opcode[i] == "END"){
+            cout<< opcode[i] << endl;
+            fout<< opcode[i] << endl;
             continue;
         }
             if(objcode[i] != "") {
@@ -827,7 +832,7 @@ void showobjcode()
                     cout << "flags:" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
                     fout << "flags:" <<  flag_n[i] <<  flag_i[i] << temp << "  ";
                 }
-
+ 
             }else{
                 cout << "XX" << " ";
                 fout << "XX" << " ";
