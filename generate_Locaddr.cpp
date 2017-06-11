@@ -24,11 +24,9 @@ int main()
     int block=0;
     int block_addr[10]={0};
     int sum_addr=0;
-    //string block_name[10]={"\0","\0","\0","\0","\0","\0","\0","\0","\0","\0"};
-    string block_name[10];
+    string block_name[10]={"\0"};
     string blockstr;
-    //string LTORG_name[10]={"\0","\0","\0","\0","\0","\0","\0","\0","\0","\0"};
-    string LTORG_name[10];
+    string LTORG_name[10]={"\0"};
     string LTORGstr;
     bool LTORG_flag=true;
     bool USE_flag=false;
@@ -109,6 +107,7 @@ int main()
             else if(buffer[buffer.length()-2]=='6')
             {
                 format=60;
+                addr_output<<endl;
             }
             else
             {
@@ -119,6 +118,10 @@ int main()
             if(USE_flag!=true && LTORG_outputflag!=true)
             {
                 addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/"<<block<<endl;
+            }
+            else
+            {
+                addr_output<<endl;
             }
             USE_flag=false;
             LTORG_outputflag=false;
