@@ -1,0 +1,87 @@
+=SYMTAB=
+COPY       0  0000 
+FIRST      0  0000 
+CLOOP      0  0006 
+ENDFIL     0  0018 
+RETADR     1  0000 
+LENGTH     1  0003 
+BUFFER     2  0000 
+BUFEND     2  1002 
+MAXLEN     2  1002 
+RDREC      0  002a 
+RLOOP      0  0034 
+exit       0  004a 
+INPUT      1  0006 
+WRREC      0  0050 
+WLOOP      0  0055 
+XTR        0  0066 
+=C'End'    1  0007 
+=X'03'     1  000a 
+=PRGRAM BLOCKS=
+  0 DEFAULT    0  0000  006c 
+  0 CDATA      1  006c  000b 
+  0 Cbks       2  0077  1002 
+=OBJECT CODES=
+1   L/B=0000/0 XX   
+2   L/B=0000/0 flags:110010  172069
+3   L/B=0003/0 flags:010010  692003
+4   L/B=0006/0 XX   
+5   L/B=0006/0 flags:110010  4b2021
+6   L/B=0009/0 flags:110010  032063
+7   L/B=000c/0 flags:010000  290000
+8   L/B=000f/0 flags:110010  332006
+9   L/B=0012/0 flags:110010  4b203b
+10  L/B=0015/0 flags:110010  3f2fee
+11  L/B=0018/0 flags:110010  032058
+12  L/B=001b/0 flags:110010  0f2059
+13  L/B=001e/0 flags:010000  6d0003
+14  L/B=0021/0 flags:110010  7f204b
+15  L/B=0024/0 flags:110010  4b2029
+16  L/B=0027/0 flags:100010  3e2fd6
+17  L/B=0000/1 XX   
+18  L/B=0000/1 XX   
+19  L/B=0003/1 XX   
+20  L/B=0000/2 XX   
+21  L/B=0000/2 XX   
+22  L/B=1002/2 XX   
+23  L/B=1002/- XX   
+24  Comment
+25  Comment
+26  Comment
+27  L/B=002a/0 XX   
+28  L/B=002a/0 format2 b400
+29  L/B=002c/0 format2 b440
+30  L/B=002e/0 format2 b410
+31  L/B=0030/0 format4 flags:010001  75101002
+32  L/B=0034/0 flags:110010  e3203b
+33  L/B=0037/0 flags:110010  332ffa
+34  L/B=003a/0 flags:110010  db2035
+35  L/B=003d/0 format2 a004
+36  L/B=003f/0 flags:110010  332008
+37  L/B=0042/0 flags:111010  57afbb
+38  L/B=0045/0 format2 b850
+39  L/B=0047/0 flags:110010  3b2fea
+40  L/B=004a/0 flags:110010  132022
+41  L/B=004d/0 flags:110000  4F0000
+42  L/B=0006/1 XX   
+43  L/B=0006/1 BYTE  F2
+44  Comment
+45  Comment
+46  Comment
+47  L/B=0050/0 XX   
+48  L/B=0050/0 format2 b410
+49  L/B=0052/0 flags:110010  77201a
+50  L/B=0055/0 flags:110010  e3201e
+51  L/B=0058/0 flags:110010  332ffa
+52  L/B=005b/0 flags:111010  53afa2
+53  L/B=005e/0 flags:110010  df2015
+54  L/B=0061/0 format2 b850
+55  L/B=0063/0 flags:110010  3b2fef
+56  L/B=0066/0 flags:110010  772001
+57  L/B=0069/0 flags:110000  4F0000
+58  L/B=0007/1 XX   
+59  L/B=0007/- XX   
+60  L/B=0007/1 LT  456e64
+61  L/B=000a/1 LT  03
+62  L/B=000b/1 
+62  END
