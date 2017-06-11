@@ -36,7 +36,7 @@ int block_num = 41;
 int main(){
     fstream fi;
     fstream fo;
-    fi.open("FIN-codetest-2017.txt",ios::in);
+    fi.open("FIN-codetest_2017.txt",ios::in);
     fo.open("format.txt",ios::out);
     while(fi.getline(line,sizeof(line),'\n'))
         {

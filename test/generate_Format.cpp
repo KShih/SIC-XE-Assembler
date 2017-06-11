@@ -36,7 +36,7 @@ int block_num = 41;
 int main(){
     fstream fi;
     fstream fo;
-    fi.open("FIN-codetest-2017.txt",ios::in);
+    fi.open("FIN-codetest_2017.txt",ios::in);
     fo.open("format.txt",ios::out);
     while(fi.getline(line,sizeof(line),'\n'))
         {
@@ -118,7 +118,7 @@ int getformat(char* c)
             return 4;
         }
 
-        if(step==3&&c[i]==','&&c[i+1]!='x')
+        if(step==3&&c[i]==','&&c[i+1]!='X')
         {
             return 2;
         }
