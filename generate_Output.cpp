@@ -16,6 +16,10 @@ int main(){
     fstream fi,fii;
     fstream fo;
     fi.open("SYMTAB.txt",ios::in);
+    if(!fi){
+        cout<<"no SYMTAB.txt"<<endl;
+        return 0;
+    }
     fo.open("Output.txt",ios::out);
     fo <<"=SYMTAB="<<endl;
     while(fi.getline(line,sizeof(line),'\n'))
@@ -24,6 +28,10 @@ int main(){
         }
     fi.close();
     fi.open("PRGRAM_BLOCKS.txt",ios::in);
+    if(!fi){
+        cout<<"no PRGRAM_BLOCKS.txt"<<endl;
+        return 0;
+    }
     fo <<"=PRGRAM BLOCKS="<<endl;
     while(fi.getline(line,sizeof(line),'\n'))
         {
@@ -33,7 +41,15 @@ int main(){
     fi.close();
     fo <<"=OBJECT CODES="<<endl;
     fi.open("Loc_addr.txt",ios::in);
+    if(!fi){
+        cout<<"no Loc_addr.txt"<<endl;
+        return 0;
+    }
     fii.open("OBJECT_CODE.txt",ios::in);
+    if(!fii){
+        cout<<"no OBJECT_CODE.txt"<<endl;
+        return 0;
+    }
     while(fi.getline(line,sizeof(line),'\n'))
         {
             if(strcmp(line2,"END")!=0)
