@@ -420,7 +420,7 @@ void writeobj()
                     for(int tt=0; tt<temp.size();tt++) {
                         int temp_Ascii = temp[tt];
                         stringstream ss;
-                        ss << hex << temp_Ascii;
+                        ss << hex << std::uppercase << temp_Ascii;
                         tempStr += ss.str();
                         ss.clear();
                     }
@@ -517,7 +517,7 @@ void writeobj()
             obj=obj+ni;
         }
         stringstream ss;
-        ss << hex << obj;
+        ss << hex << std::uppercase << obj;
         ss >> objcode[i];
 
         if (objcode[i].size() == 1) {
@@ -547,7 +547,7 @@ void cal_immediate(){
                     temp+=label[i][j];
                 }
                 stringstream ss;
-                ss << hex << temp;
+                ss << hex << std::uppercase << temp;
                 ss >> temp;
                 while(temp.size() < 4) {
                     temp = '0' + temp;
@@ -690,7 +690,7 @@ void cal_xbpe() {
         }
         string temp = "";
         stringstream ss;
-        ss << hex << xbpe;
+        ss << hex << std::uppercase << xbpe;
         ss >> temp;
         objcode[i] += temp;
     }
@@ -737,7 +737,7 @@ void cal_address() {
             if(label[i] == symtab_name[j]) {
                 int temp_i = 0x0000;
                 stringstream ss;
-                ss << hex << symtab_address[j];
+                ss << hex << std::uppercase << symtab_address[j];
                 ss >> temp_i;
                 ss.clear();
                 int temp_j;
@@ -745,7 +745,7 @@ void cal_address() {
                 ss >> temp_j;
                 ss.clear();
                 int temp_k;
-                ss << hex << block_address[temp_j];
+                ss << hex << std::uppercase << block_address[temp_j];
                 ss >> temp_k;
                 temp_i += temp_k;
                 //cout << temp_i << endl;
@@ -755,7 +755,7 @@ void cal_address() {
         }
         int line_i;
         stringstream ss;
-        ss << hex << line[i];
+        ss << hex << std::uppercase << line[i];
         ss >> line_i;
         ss.clear();
         line_i += 3;
@@ -770,7 +770,7 @@ void cal_address() {
         address += line_i;
         //cout << line_i << endl;
         string temp = "";
-        ss << hex <<address;
+        ss << hex << std::uppercase <<address;
         ss >> temp;
         while(temp.size()<3) {
             temp = '0' + temp;
@@ -864,5 +864,6 @@ void showobjcode()
         cout<<objcode[i]<<endl;
         fout<<objcode[i]<<endl;
     }
+    cout << endl << endl << "Successfully create OBJECT_CODE.txt !" << endl;
     fout.close();
 }

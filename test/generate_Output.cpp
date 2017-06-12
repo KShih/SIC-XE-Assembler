@@ -68,7 +68,8 @@ int main(){
     fi.close();
     fii.close();
     fo.close();
-    cout<<"DONE!!"<<endl;
+    cout<<"Successfully create Output.txt!"<<endl;
+    cout << "Check out the Output.txt for everything!! " << endl;
     return 0;
 }
 

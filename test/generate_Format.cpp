@@ -53,7 +53,7 @@ int main(){
 
     fi.close();
     fo.close();
-    system("PAUSE");
+    cout << "Successfully create format.txt" << endl;
     return 0;
 }
 

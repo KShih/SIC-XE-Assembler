@@ -98,7 +98,7 @@ int main()
                 {
                     SYMTAB<<buffer[i];
                 }
-                SYMTAB<<block<<"  "<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<endl;
+                SYMTAB<<block<<"  "<<setw(4)<<setfill('0')<< hex << std::uppercase << block_addr[block]<<endl;
             }
             if(buffer[buffer.length()-2]=='5')
             {
@@ -117,7 +117,7 @@ int main()
             else if(buffer[buffer.length()-2]=='6')
             {
                 format=60;
-                addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/-"<<endl;
+                addr_output<<setw(4)<<setfill('0')<<hex<< std::uppercase <<block_addr[block]<<"/-"<<endl;
             }
             else
             {
@@ -127,11 +127,11 @@ int main()
             }
             if(absolute_flag==true)
             {
-                addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/-"<<endl;
+                addr_output<<setw(4)<<setfill('0')<<hex<< std::uppercase <<block_addr[block]<<"/-"<<endl;
             }
             else if(LTORG_outputflag!=true)
             {
-                addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/"<<block<<endl;
+                addr_output<<setw(4)<<setfill('0')<<hex<< std::uppercase <<block_addr[block]<<"/"<<block<<endl;
             }
             absolute_flag=false;
             LTORG_outputflag=false;
@@ -238,7 +238,7 @@ int main()
         {
             if(block_name[i]!="\0")
             {
-                PRGRAM_BLOCKS<<left<<setw(9)<<setfill(' ')<<block_name[i]<<"  "<<i<<"  "<<right<<setw(4)<<setfill('0')<<hex<<sum_addr<<"  "<<setw(4)<<setfill('0')<<hex<<block_addr[i]<<endl;
+                PRGRAM_BLOCKS<<left<<setw(9)<<setfill(' ')<<block_name[i]<<"  "<<i<<"  "<<right<<setw(4)<<setfill('0')<<hex<< std::uppercase <<sum_addr<<"  "<<setw(4)<<setfill('0')<<hex<< std::uppercase <<block_addr[i]<<endl;
                 sum_addr+=block_addr[i];
             }
             else
@@ -250,6 +250,6 @@ int main()
         addr_output.close();
         SYMTAB.close();
         PRGRAM_BLOCKS.close();
-        cout<<"finish!"<<endl;
+        cout<<"Successfully create Loc_addr.txt, PRGRAM_BLOCKS.txt, SYMTAB.txt"<<endl;
     }
 }
