@@ -52,16 +52,25 @@ int main(){
     }
     while(fi.getline(line,sizeof(line),'\n'))
         {
+            bool check=true;
             if(strcmp(line2,"END")!=0)
             {
-            fii.getline(line2,sizeof(line2),'\n');
+                fii.getline(line2,sizeof(line2),'\n');
             if(strcmp(line,"Comment")!=0)
             {
-                fo.setf(ios::left, ios::adjustfield);
-                fo << setw(3)<<linecount+1<< setw(5)<<" L/B="<<line<<" ";
+                if(strcmp(line,"END")==0)
+                {
+                    check=false;
+                }
+                if(check)
+                {
+                    fo.setf(ios::left, ios::adjustfield);
+                    fo << setw(3)<<linecount+1<< setw(5)<<" L/B="<<line<<" ";
+                }
+
             }
 
-        }
+            }
 
 
         if(strcmp(line2,"Comment")==0)
@@ -71,7 +80,7 @@ int main(){
         }
         else if(strcmp(line2,"END")==0)
         {
-            fo <<endl<< setw(3)<<linecount+1<<" "<<line2;
+            fo << setw(3)<<linecount+1<<" "<<line2;
         }
         else
         {

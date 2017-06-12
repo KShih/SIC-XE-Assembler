@@ -7,11 +7,11 @@ CLOOP      JSUB     RDREC
            COMP     #0
            JEQ      ENDFIL
            JSUB     WRREC
-           J        CLOOP
+           J        CLOAP
 ENDFIL     LDA      =C'End'
            STA      BUFFER
            LDS      #3
-           STS      LENGTH
+           STC      LENGTH
            JSUB     WRREC
            J        @RETADR
            USE      CDATA
@@ -28,7 +28,7 @@ MAXLEN     EQU      BUFEND-BUFFER
 RDREC      CLEAR    A
            CLEAR    S
            CLEAR    X
-           +LDT     #MAXLEN
+           LDT      #MAXLEN
 RLOOP      TD       INPUT
            JEQ      RLOOP
            RD       INPUT

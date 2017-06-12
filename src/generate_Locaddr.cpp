@@ -54,6 +54,11 @@ int main()
                 addr_output<<"Comment"<<endl;
                 continue;
             }
+            else if(buffer[11]=='E' && buffer[12]=='N' && buffer[13]=='D')
+            {
+                addr_output<<"END";
+                continue;
+            }
             if(buffer[20]=='=')
             {
                 for(i=20;i<buffer.length()-2;i++)
@@ -118,6 +123,7 @@ int main()
             {
                 format=60;
                 addr_output<<setw(4)<<setfill('0')<<hex<< std::uppercase <<block_addr[block]<<"/-"<<endl;
+                LTORG_outputflag=true;
             }
             else
             {
@@ -158,6 +164,7 @@ int main()
                         if(LTORG_name[i]!="\0")
                         {
                             SYMTAB<<left<<setw(11)<<setfill(' ')<<LTORG_name[i]<<block<<"  "<<right<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<endl;
+                            addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/"<<block<<endl;
                             if(LTORG_name[i][1]=='C')
                             {
                                 block_addr[block]+=3;
@@ -166,7 +173,6 @@ int main()
                             {
                                 block_addr[block]+=1;
                             }
-                            addr_output<<setw(4)<<setfill('0')<<hex<<block_addr[block]<<"/"<<block<<endl;
                             LTORG_outputflag=true;
                         }
                         else
