@@ -52,25 +52,19 @@ int main(){
     }
     while(fi.getline(line,sizeof(line),'\n'))
         {
-            bool check=true;
-            if(strcmp(line2,"END")!=0)
+            fii.getline(line2,sizeof(line2),'\n');
+
+            if(strcmp(line,"END")!=0)
             {
-                fii.getline(line2,sizeof(line2),'\n');
+
+
             if(strcmp(line,"Comment")!=0)
             {
-                if(strcmp(line,"END")==0)
-                {
-                    check=false;
-                }
-                if(check)
-                {
-                    fo.setf(ios::left, ios::adjustfield);
-                    fo << setw(3)<<linecount+1<< setw(5)<<" L/B="<<line<<" ";
-                }
-
+                fo.setf(ios::left, ios::adjustfield);
+                fo << setw(3)<<linecount+1<< setw(5)<<" L/B="<<line<<" ";
             }
 
-            }
+        }
 
 
         if(strcmp(line2,"Comment")==0)
@@ -97,5 +91,3 @@ int main(){
     cout << "Check out the Output.txt for everything!! " << endl;
     return 0;
 }
-
-
