@@ -20,9 +20,9 @@ This Project is about implementing SIC/XE Assembler with C++.
 Find our code at 'src'.
 Find out input at 'input'.
 Find our executeble file at 'bin'.
-Demo Video: 
-    Correct input's Demo：https://youtu.be/zlILhH0tV60
-    Wrong input's Demo: https://youtu.be/Rk6S2EsGpuA
+- Demo Video: 
+    - Correct input's Demo：https://youtu.be/zlILhH0tV60
+    - Wrong input's Demo: https://youtu.be/Rk6S2EsGpuA
 
 #### Run the Project:
 ##### for Linux/macOS:
